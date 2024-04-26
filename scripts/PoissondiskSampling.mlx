@@ -1,0 +1,17 @@
+<!DOCTYPE FilterScript>
+<FilterScript>
+ <filter name="Poisson-disk Sampling">
+  <Param name="SampleNum" type="RichInt" description="Number of samples" tooltip="The desired number of samples. The ray of the disk is calculated according to the sampling density." value="16500"/>
+  <Param max="139.659" name="Radius" type="RichAbsPerc" description="Explicit Radius" tooltip="If not zero this parameter override the previous parameter to allow exact radius specification" value="0" min="0"/>
+  <Param name="MontecarloRate" type="RichInt" description="MonterCarlo OverSampling" tooltip="The over-sampling rate that is used to generate the initial Montecarlo samples (e.g. if this parameter is &lt;i>K&lt;/i> means that&lt;i>K&lt;/i> x &lt;i>poisson sample&lt;/i> points will be used). The generated Poisson-disk samples are a subset of these initial Montecarlo samples. Larger this number slows the process but make it a bit more accurate." value="20"/>
+  <Param name="SaveMontecarlo" type="RichBool" description="Save Montecarlo" tooltip="If true, it will generate an additional Layer with the montecarlo sampling that was pruned to build the poisson distribution." value="false"/>
+  <Param name="ApproximateGeodesicDistance" type="RichBool" description="Approximate Geodesic Distance" tooltip="If true Poisson Disc distances are computed using an approximate geodesic distance, e.g. an euclidean distance weighted by a function of the difference between the normals of the two points." value="false"/>
+  <Param name="Subsample" type="RichBool" description="Base Mesh Subsampling" tooltip="If true the original vertices of the base mesh are used as base set of points. In this case the SampleNum should be obviously much smaller than the original vertex number.&lt;br>Note that this option is very useful in the case you want to subsample a dense point cloud." value="false"/>
+  <Param name="RefineFlag" type="RichBool" description="Refine Existing Samples" tooltip="If true the vertices of the below mesh are used as starting vertices, and they will utterly refined by adding more and more points until possible. " value="true"/>
+  <Param name="RefineMesh" type="RichMesh" description="Samples to be refined" tooltip="Used only if the above option is checked. " value="0"/>
+  <Param name="BestSampleFlag" type="RichBool" description="Best Sample Heuristic" tooltip="If true it will use a simple heuristic for choosing the samples. At a small cost (it can slow a bit the process) it usually improve the maximality of the generated sampling. " value="true"/>
+  <Param name="BestSamplePool" type="RichInt" description="Best Sample Pool Size" tooltip="Used only if the Best Sample Flag is true. It control the number of attempt that it makes to get the best sample. It is reasonable that it is smaller than the Montecarlo oversampling factor." value="10"/>
+  <Param name="ExactNumFlag" type="RichBool" description="Exact number of samples" tooltip="If requested it will try to do a dicotomic search for the best poisson disk radius that will generate the requested number of samples with a tolerance of the 0.5%. Obviously it takes much longer." value="true"/>
+  <Param name="RadiusVariance" type="RichFloat" description="Radius Variance" tooltip="The radius of the disk is allowed to vary between r and r*var. If this parameter is 1 the sampling is the same of the Poisson Disk Sampling" value="1"/>
+ </filter>
+</FilterScript>

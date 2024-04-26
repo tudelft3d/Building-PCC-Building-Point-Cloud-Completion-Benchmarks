@@ -1,0 +1,70 @@
+
+Parameter settings:
+
+--ckpts .//media/geo3d/software/my_code/MyPoinTr/experiments/AdaPoinTr/BuildingNL_models/BNLdemo/ckpt-best.pth
+--config ./cfgs/BuildingNL_models/AdaPoinTr.yaml
+--exp_name BNLdemo
+--vis ./visualization
+
+
+---------------------------------------------------------------------------------------------------------
+1. Split AHN3, and AHN4
+# Create folder C if it doesn't exist
+mkdir -p Folder_C
+
+# Assuming you're currently in the parent directory of A, B, and C
+for file in AHN3/*.las; do
+    file_name=$(basename "$file")  # Get the file name without path
+    file_name_no_extension="${file_name%.las}"  # Remove the '.las' extension
+
+    # Create subfolder in C and move files from A and B
+    mkdir -p "AHN/$file_name_no_extension"
+    mv "AHN3/$file_name" "AHN/$file_name_no_extension/00.las"
+    mv "AHN4/$file_name" "AHN/$file_name_no_extension/01.las"
+done
+
+---------------------------------------------------------------------------------------------------------
+
+2. Split it into train, test, validation 6:2:2
+
+# List the .ply files and shuffle them randomly
+all_files=(*.ply)
+shuffled_files=($(shuf -e "${all_files[@]}"))
+
+# Calculate the number of files for each category
+total_files=${#shuffled_files[@]}
+train_count=$((total_files * 6 / 10))
+test_count=$((total_files * 2 / 10))
+validate_count=$((total_files * 2 / 10))
+
+# Extract the file names for each category
+train_files=("${shuffled_files[@]:0:train_count}")
+test_files=("${shuffled_files[@]:train_count:test_count}")
+validate_files=("${shuffled_files[@]:((train_count + test_count)):validate_count}")
+
+# Create a text file to store the results
+result_file="file_list.txt"
+
+# Write the results to the text file with double quotes and commas
+{
+  echo "Train Files:"
+  for file in "${train_files[@]}"; do
+    echo "\"${file%.ply}\","
+  done
+  echo
+  echo "Test Files:"
+  for file in "${test_files[@]}"; do
+    echo "\"${file%.ply}\","
+  done
+  echo
+  echo "Validate Files:"
+  for file in "${validate_files[@]}"; do
+    echo "\"${file%.ply}\","
+  done
+} > "$result_file"
+
+# Remove the trailing comma from the last line of each category
+sed -i 'N;$s/,\n/\n/' "$result_file"
+
+# Move the text file to the parent directory
+mv "$result_file" ..

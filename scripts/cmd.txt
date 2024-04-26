@@ -1,0 +1,1 @@
+for /r %inputFolder% %F in (*.obj) do (meshlabserver.exe -i %F -o %outputFolder%\%~nF\%~nF.obj -m wt sa -s %scriptFolder%\PoissondiskSampling.mlx)

@@ -1,0 +1,7 @@
+NAME: BuildingNL
+CATEGORY_FILE_PATH: /media/geo3d/data/3D_BAG_PoC_data/pcc_data/BuildingNL/data_50k/BuildingNL.json #data/BuildingNL/demo_small/BuildingNL.json #
+N_POINTS: 16384
+N_RENDERINGS: 2
+PARTIAL_POINTS_PATH: /media/geo3d/data/3D_BAG_PoC_data/pcc_data/BuildingNL/data_50k/partial/%s/%02d.las #data/BuildingNL/demo_small/partial/%s/%02d.las #
+COMPLETE_POINTS_PATH: /media/geo3d/data/3D_BAG_PoC_data/pcc_data/BuildingNL/data_50k/complete/%s.ply #data/BuildingNL/demo_small/complete/%s.ply #
+CARS: FALSE
