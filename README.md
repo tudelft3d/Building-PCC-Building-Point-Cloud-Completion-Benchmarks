@@ -30,7 +30,7 @@ Pre-trained models for all the methods tested are provided:
 | TopNet | [[SurfDrive](https://surfdrive.surf.nl/files/index.php/s/5r4YvctnY3x8QQt)] / [[BaiDuYun](https://pan.baidu.com/s/1FMvqRyk8L41eHdQia_nM3w)] (code:k9hd) | 6.43 | 26.5% |  
 | GRNet | [[SurfDrive](https://surfdrive.surf.nl/files/index.php/s/8CELyqrWcHySywV)] / [[BaiDuYun](https://pan.baidu.com/s/1vvcCPN-rKZDGE5XnF9pNXw)] (code:mr4l) | 5.05 | 43.1% | 
 | SnowflakeNet | [[SurfDrive](https://surfdrive.surf.nl/files/index.php/s/ezGAYlqw7qesBdH)] / [[BaiDuYun](https://pan.baidu.com/s/1y3Mi-nPusTV2Mof2biIdXA)] (code:sga2) | 6.61 | 60.9% |
-| PoinTr | [[SurfDrive](https://surfdrive.surf.nl/files/index.php/s/4GGiv2OE3EwbTtN)] / [[BaiDuYun](https://pan.baidu.com/s/17Htqq5Ni9uWbTPqBSnPwng)] (code:e2fq) | 1.40 | 54.8% |
+| PoinTr | [[SurfDrive](https://surfdrive.surf.nl/files/index.php/s/4GGiv2OE3EwbTtN)] / [[BaiDuYun](https://pan.baidu.com/s/1DmUN7SIkTNy6l2Fvbzmr1w)] (code:qmsd) | 1.40 | 54.8% |
 | AnchorFormer | [[SurfDrive](https://surfdrive.surf.nl/files/index.php/s/5QT5ou6hOy2XuUd)] / [[BaiDuYun](https://pan.baidu.com/s/133CIj3uMLHo2Yjx6CmFHoQ)] (code:7hev) | 1.46 | 65.8% |
 | AdaPoinTr | [[SurfDrive](https://surfdrive.surf.nl/files/index.php/s/YNSI3jgJFaBBUiX)] / [[BaiDuYun](https://pan.baidu.com/s/1UDEEBDjxJfHIsJnrr3wX7A)] (code:xf1q) | 1.42 | 70.2% |
 
