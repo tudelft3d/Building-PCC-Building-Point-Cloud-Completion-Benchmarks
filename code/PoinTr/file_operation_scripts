@@ -1,17 +1,90 @@
+pip3 install numpy --pre torch torchvision torchaudio --force-reinstall --index-url https://download.pytorch.org/whl/nightly/cu117
 
 Parameter settings:
+Main: 
+main.py --config ./cfgs/BuildingNL_models/AdaPoinTr.yaml --exp_name BNLdemo
 
---ckpts .//media/geo3d/software/my_code/MyPoinTr/experiments/AdaPoinTr/BuildingNL_models/BNLdemo/ckpt-best.pth
---config ./cfgs/BuildingNL_models/AdaPoinTr.yaml
---exp_name BNLdemo
---vis ./visualization
+--config
+./cfgs/BuildingNL_models/P2C.yaml
+--exp_name
+BNLdemo
 
+--config
+./cfgs/BuildingNL_models/P2C.yaml
+--exp_name
+BNLdemo
+
+--config
+./cfgs/BuildingNL_models/AnchorFormer.yaml
+--exp_name
+BNLdemo
+---------------------------------------------------------------------------------------------------------
+
+Inference: 
+--model_config cfgs/BuildingNL_models/AdaPoinTr.yaml
+--model_checkpoint experiments/AdaPoinTr/BuildingNL_models/BNL_50k/ckpt-best.pth
+--pc_root data/BuildingNL/demo_small/Single/AHN4/
+--truth_root data/BuildingNL/demo_small/Single/complete/
+--model_3d_root data/BuildingNL/demo_small/Single/model/
+--out_pc_root inference_result/single_test/
+--save_predict true
+--save_merged true
+--save_vis_img false
+--copy_original_files true
+
+
+--model_config cfgs/BuildingNL_models/AdaPoinTr.yaml 
+--model_checkpoint experiments/AdaPoinTr/BuildingNL_models/BNL_50k/ckpt-best.pth
+--pc_root /media/geo3d/data/3D_BAG_PoC_data/pcc_data/BuildingNL/data_50k/unseen/AHN3/
+--truth_root /media/geo3d/data/3D_BAG_PoC_data/pcc_data/BuildingNL/data_50k/unseen/complete/
+--model_3d_root /media/geo3d/data/3D_BAG_PoC_data/pcc_data/BuildingNL/data_50k/unseen/model/
+--out_pc_root /media/geo3d/data/3D_BAG_PoC_data/pcc_data/BuildingNL/data_50k/unseen/inference_results/AdaPoinTr/AHN3_inference/
+--save_predict true
+--save_merged true
+--save_vis_img true
+--copy_original_files true
+
+python tools/inference.py \
+--model_config cfgs/BuildingNL_models/AdaPoinTr.yaml \
+--model_checkpoint experiments/AdaPoinTr/BuildingNL_models/BNL_50k/ckpt-best.pth \
+--pc_root /media/geo3d/data/3D_BAG_PoC_data/pcc_data/BuildingNL/data_50k/unseen/AHN4/ \
+--truth_root /media/geo3d/data/3D_BAG_PoC_data/pcc_data/BuildingNL/data_50k/unseen/complete/ \
+--model_3d_root /media/geo3d/data/3D_BAG_PoC_data/pcc_data/BuildingNL/data_50k/unseen/model/ \
+--out_pc_root /media/geo3d/data/3D_BAG_PoC_data/pcc_data/BuildingNL/data_50k/unseen/inference_results/AdaPoinTr/AHN4_inference/ \
+--save_predict true \
+--save_merged true \
+--save_vis_img true \
+--copy_original_files true \
+--evaluation_only true
+
+python tools/inference.py \
+--model_config cfgs/BuildingNL_models/AnchorFormer.yaml \
+--model_checkpoint experiments/AnchorFormer/BuildingNL_models/BNL_100epochs/ckpt-best.pth \
+--pc_root /media/geo3d/data/3D_BAG_PoC_data/pcc_data/BuildingNL/data_50k/unseen/AHN3/ \
+--truth_root /media/geo3d/data/3D_BAG_PoC_data/pcc_data/BuildingNL/data_50k/unseen/complete/ \
+--model_3d_root /media/geo3d/data/3D_BAG_PoC_data/pcc_data/BuildingNL/data_50k/unseen/model/ \
+--out_pc_root /media/geo3d/data/3D_BAG_PoC_data/pcc_data/BuildingNL/data_50k/unseen/inference_results/AnchorFormer/AHN3_inference/ \
+--save_predict true \
+--save_merged true \
+--save_vis_img true \
+--copy_original_files true \
+--evaluation_only true \
+--with_recompute true
+---------------------------------------------------------------------------------------------------------
+
+pre_norm_params.py
+--gt_root
+/media/geo3d/data/3D_BAG_PoC_data/pcc_data/BuildingNL/data_50k/complete
+--data_yaml_file
+/media/geo3d/software/my_code/MyPoinTrTest/cfgs/dataset_configs/BuildingNL.yaml
 
 ---------------------------------------------------------------------------------------------------------
-1. Split AHN3, and AHN4
-# Create folder C if it doesn't exist
-mkdir -p Folder_C
+tfboard
+tensorboard --logdir=experiments/AdaPoinTr/BuildingNL_models/TFBoard/BNLdemo/train
+tensorboard --logdir=experiments/AdaPoinTr/BuildingNL_models/TFBoard/BNLdemo/test
 
+---------------------------------------------------------------------------------------------------------
+1. Split AHN3, and AHN4 in 'partial' folder
 # Assuming you're currently in the parent directory of A, B, and C
 for file in AHN3/*.las; do
     file_name=$(basename "$file")  # Get the file name without path
@@ -25,7 +98,7 @@ done
 
 ---------------------------------------------------------------------------------------------------------
 
-2. Split it into train, test, validation 6:2:2
+2. Split it into train, test, validation 6:2:2, in compalge_gt folder, generate a txt in parent dir
 
 # List the .ply files and shuffle them randomly
 all_files=(*.ply)
@@ -68,3 +141,25 @@ sed -i 'N;$s/,\n/\n/' "$result_file"
 
 # Move the text file to the parent directory
 mv "$result_file" ..
+
+---------------------------------------------------------------------------------------------------------
+
+3. Copy test files into separapte folder
+3.1 complete point cloud:
+cat /media/geo3d/data/3D_BAG_PoC_data/pcc_data/BuildingNL/data_50k/test_list | xargs -I {} cp /media/geo3d/data/3D_BAG_PoC_data/pcc_data/BuildingNL/data_50k/complete/{}.ply /media/geo3d/data/3D_BAG_PoC_data/pcc_data/BuildingNL/data_50k/test/complete/
+
+3.2 model:
+cat /media/geo3d/data/3D_BAG_PoC_data/pcc_data/BuildingNL/data_50k/test_list | xargs -I {} cp /media/geo3d/data/3D_BAG_PoC_data/pcc_data/BuildingNL/data_50k/model/{}.ply /media/geo3d/data/3D_BAG_PoC_data/pcc_data/BuildingNL/data_50k/test/model/
+
+3.3 AHN3:
+cat /media/geo3d/data/3D_BAG_PoC_data/pcc_data/BuildingNL/data_50k/test_list | xargs -I {} cp /media/geo3d/data/3D_BAG_PoC_data/pcc_data/DenHaag_processed/output_all/matched_ahn3_pcl/{}.las /media/geo3d/data/3D_BAG_PoC_data/pcc_data/BuildingNL/data_50k/test/AHN3/
+
+cat /media/geo3d/data/3D_BAG_PoC_data/pcc_data/BuildingNL/data_50k/test_list | xargs -I {} cp /media/geo3d/data/3D_BAG_PoC_data/pcc_data/Rotterdam_processed/output_all/matched_ahn3_pcl/{}.las /media/geo3d/data/3D_BAG_PoC_data/pcc_data/BuildingNL/data_50k/test/AHN3/
+
+
+3.4 AHN4:
+cat /media/geo3d/data/3D_BAG_PoC_data/pcc_data/BuildingNL/data_50k/test_list | xargs -I {} cp /media/geo3d/data/3D_BAG_PoC_data/pcc_data/DenHaag_processed/output_all/matched_ahn4_pcl/{}.las /media/geo3d/data/3D_BAG_PoC_data/pcc_data/BuildingNL/data_50k/test/AHN4/
+
+cat /media/geo3d/data/3D_BAG_PoC_data/pcc_data/BuildingNL/data_50k/test_list | xargs -I {} cp /media/geo3d/data/3D_BAG_PoC_data/pcc_data/Rotterdam_processed/output_all/matched_ahn4_pcl/{}.las /media/geo3d/data/3D_BAG_PoC_data/pcc_data/BuildingNL/data_50k/test/AHN4/
+
+

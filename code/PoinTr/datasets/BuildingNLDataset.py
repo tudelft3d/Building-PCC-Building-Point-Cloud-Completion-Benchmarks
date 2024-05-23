@@ -10,7 +10,7 @@ import os
 import json
 from .build import DATASETS
 from utils.logger import *
-
+import open3d as o3d
 
 # References:
 # - https://github.com/hzxie/GRNet/blob/master/utils/data_loaders.py
@@ -34,6 +34,21 @@ class BuildingNL(data.Dataset):
         self.n_renderings = 2 if self.subset == 'train' else 1
         self.file_list = self._get_file_list(self.subset, self.n_renderings)
         self.transforms = self._get_transforms(self.subset)
+
+    def pc_norm_with_centroid_and_scale(self, pc, centroid, m):
+        """ pc: NxC, return NxC """
+        pc = pc - centroid
+        pc = pc / m
+        return pc
+
+    def pc_norm(self, pc):
+        """ pc: NxC, return NxC """
+        centroid = np.mean(pc, axis=0)
+        pc = pc - centroid
+        m = np.max(np.sqrt(np.sum(pc**2, axis=1)))
+        pc = pc / m
+        assert m != 0
+        return pc, centroid, m
 
     def _get_transforms(self, subset):
         if subset == 'train':
@@ -92,11 +107,17 @@ class BuildingNL(data.Dataset):
         data = {}
         rand_idx = random.randint(0, self.n_renderings - 1) if self.subset=='train' else 0
 
-        for ri in ['partial', 'gt']:
+        gt_centroid = 0
+        gt_scale = 0
+        for ri in ['gt', 'partial']:
             file_path = sample['%s_path' % ri]
             if type(file_path) == list:
                 file_path = file_path[rand_idx]
             data[ri] = IO.get(file_path).astype(np.float32)
+            if ri == 'gt':
+                data[ri], gt_centroid, gt_scale = self.pc_norm(data[ri])
+            else:
+                data[ri] = self.pc_norm_with_centroid_and_scale(data[ri], gt_centroid, gt_scale)
 
         assert data['gt'].shape[0] == self.npoints
 

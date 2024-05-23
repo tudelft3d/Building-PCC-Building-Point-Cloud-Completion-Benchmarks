@@ -54,4 +54,4 @@ class IO:
     def _write_ply(cls, file_path, xyz_np):
         pcd = open3d.geometry.PointCloud()
         pcd.points = open3d.utility.Vector3dVector(xyz_np)
-        open3d.io.write_point_cloud(file_path, pcd, True)
+        open3d.io.write_point_cloud(file_path, pcd, False)

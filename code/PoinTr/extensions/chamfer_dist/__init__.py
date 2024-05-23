@@ -41,6 +41,14 @@ class ChamferDistanceL2(torch.nn.Module):
             xyz2 = xyz2[non_zeros2].unsqueeze(dim=0)
 
         dist1, dist2 = ChamferFunction.apply(xyz1, xyz2)
+
+        dist1[torch.isinf(dist1)] = 0
+        dist2[torch.isinf(dist2)] = 0
+        dist1[torch.isnan(dist1)] = 0
+        dist2[torch.isnan(dist2)] = 0
+        dist1[dist1 > 100000] = 0
+        dist2[dist2 > 100000] = 0
+
         return torch.mean(dist1) + torch.mean(dist2)
 
 class ChamferDistanceL2_split(torch.nn.Module):
@@ -79,6 +87,13 @@ class ChamferDistanceL1(torch.nn.Module):
         dist1, dist2 = ChamferFunction.apply(xyz1, xyz2)
         # import pdb
         # pdb.set_trace()
+        dist1[torch.isinf(dist1)] = 0
+        dist2[torch.isinf(dist2)] = 0
+        dist1[torch.isnan(dist1)] = 0
+        dist2[torch.isnan(dist2)] = 0
+        dist1[dist1 > 100000] = 0
+        dist2[dist2 > 100000] = 0
+
         dist1 = torch.sqrt(dist1)
         dist2 = torch.sqrt(dist2)
         return (torch.mean(dist1) + torch.mean(dist2))/2
