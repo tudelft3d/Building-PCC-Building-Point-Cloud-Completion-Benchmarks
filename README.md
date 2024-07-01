@@ -1,5 +1,5 @@
 # Building-PCC-Building-Point-Cloud-Completion-Benchmarks
-This is the implementation of the Builiding-PCC paper: [*Building-PCC: Building Point Cloud Completion Benchmarks*](https://arxiv.org/abs/2404.15644).
+This is the implementation of the Builiding-PCC paper: [*Building-PCC: Building Point Cloud Completion Benchmarks*](https://isprs-annals.copernicus.org/articles/X-4-W5-2024/179/2024/).
 This repository contains scripts for generating Building-PCC data, links for data downloads, test codes for state-of-the-art methods, pre-trained models, and evaluation results.
 
 <div align="center">    
@@ -37,13 +37,15 @@ Pre-trained models for all the methods tested are provided:
 ## Citation
 If you find our work useful in your research, please consider citing: 
 ```
-@misc{gao2024buildingpcc,
-      title={Building-PCC: Building Point Cloud Completion Benchmarks}, 
-      author={Weixiao Gao and Ravi Peters and Jantien Stoter},
-      year={2024},
-      eprint={2404.15644},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
+@Article{isprs-annals-X-4-W5-2024-179-2024,
+AUTHOR = {Gao, W. and Peters, R. and Stoter, J.},
+TITLE = {Building-PCC: Building Point Cloud Completion Benchmarks},
+JOURNAL = {ISPRS Annals of the Photogrammetry, Remote Sensing and Spatial Information Sciences},
+VOLUME = {X-4/W5-2024},
+YEAR = {2024},
+PAGES = {179--186},
+URL = {https://isprs-annals.copernicus.org/articles/X-4-W5-2024/179/2024/},
+DOI = {10.5194/isprs-annals-X-4-W5-2024-179-2024}
 }
 ```
 
