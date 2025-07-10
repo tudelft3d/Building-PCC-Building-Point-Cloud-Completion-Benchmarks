@@ -113,7 +113,7 @@ class BuildingNL(data.Dataset):
             file_path = sample['%s_path' % ri]
             if type(file_path) == list:
                 file_path = file_path[rand_idx]
-            data[ri] = IO.get(file_path).astype(np.float32)
+            data[ri] = IO.get(file_path).astype(np.float64)
             if ri == 'gt':
                 data[ri], gt_centroid, gt_scale = self.pc_norm(data[ri])
             else:
